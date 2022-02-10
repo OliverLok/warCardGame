@@ -54,7 +54,7 @@ newDeck.shuffle()
 
 for x in range(26):
     playerOne.addCards(newDeck.dealOne())
-    playerTwo.allCards(newDeck.dealOne())
+    playerTwo.addCards(newDeck.dealOne())
 
 gameOn = True
 roundNum = 0
@@ -62,12 +62,12 @@ while gameOn:
     roundNum += 1
     print(f'Round {roundNum}')
 
-    if len(playerOne.addCards()) == 0:
+    if len(playerOne.allCards) == 0:
         print('Player One, out of cards! Player Two Wins!')
         gameOn = False
         break
 
-    if len(playerTwo.addCards()) == 0:
+    if len(playerTwo.allCards) == 0:
         print('Player Two, out of cards! Player One Wins!')
         gameOn = False
         break
@@ -79,4 +79,29 @@ while gameOn:
     playerTwoCards.append(playerTwo.removeOne())
 
     #While at war
-    
+    atWar = True
+    while atWar:
+        if playerOneCards[-1].value > playerTwoCards[-1].value: #If player one wins
+            playerOne.addCards(playerOneCards)
+            playerOne.addCards(playerTwoCards)
+            atWar = False
+        elif playerOneCards[-1].value < playerTwoCards[-1].value: #If player two wins
+            playerTwo.addCards(playerOneCards)
+            playerTwo.addCards(playerTwoCards)
+            atWar = False
+        else:
+            print('WAR!')
+            if len(playerOne.allCards) < 5:
+                print("Player one unable to declare war")
+                print("Player two wins")
+                gameOn = False
+                break
+            elif len(playerTwo.allCards) < 5:
+                print("Player two unable to declare war")
+                print("Player one wins")
+                gameOn = False
+                break
+            else:
+                for num in range(5):
+                    playerOneCards.append(playerOne.removeOne())
+                    playerTwoCards.append(playerTwo.removeOne())
