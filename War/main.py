@@ -11,15 +11,72 @@ class Card:
         self.value = values[rank]
 
     def __str__(self):
-        return Card.rank + " of " + Card.suit
+        return self.rank + " of " + self.suit
 
 class Deck:
     def __init__(self):
         self.allCards = []
 
-        for suit
+        for suit in suits:
+            for rank in ranks:
+                #create card object
+                createdCard = Card(suit, rank)
+                self.allCards.append(createdCard)
 
-twoHearts = Card('Hearts', 'Two')
-threeClubs = Card('Clubs','Three')
+    def shuffle(self):
+        random.shuffle(self.allCards)
 
-print(twoHearts.value < threeClubs.value)
+    def dealOne(self):
+        return self.allCards.pop()
+
+class Player:
+
+    def __init__(self, name):
+        self.name = name
+        self.allCards = []
+
+    def removeOne(self):
+        return self.allCards.pop(0)
+    def addCards(self, newCards):
+        if type(newCards) == type([]): #If there is more than 1 new card to be added
+            self.allCards.extend(newCards)
+        else:
+            self.allCards.append(newCards) #If there is only 1 new card to be added
+
+    def __str__(self):
+        return f'Player {self.name} has {len(self.allCards)} cards.'
+
+playerOne = Player("One")
+playerTwo = Player("Two")
+
+newDeck = Deck()
+newDeck.shuffle()
+
+for x in range(26):
+    playerOne.addCards(newDeck.dealOne())
+    playerTwo.allCards(newDeck.dealOne())
+
+gameOn = True
+roundNum = 0
+while gameOn:
+    roundNum += 1
+    print(f'Round {roundNum}')
+
+    if len(playerOne.addCards()) == 0:
+        print('Player One, out of cards! Player Two Wins!')
+        gameOn = False
+        break
+
+    if len(playerTwo.addCards()) == 0:
+        print('Player Two, out of cards! Player One Wins!')
+        gameOn = False
+        break
+
+    #Start new round
+    playerOneCards = []
+    playerOneCards.append(playerOne.removeOne())
+    playerTwoCards = []
+    playerTwoCards.append(playerTwo.removeOne())
+
+    #While at war
+    
